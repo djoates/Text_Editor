@@ -34,7 +34,7 @@ public class LoginPage extends javax.swing.JFrame {
         usernameInput = new javax.swing.JTextField();
         passwordInput = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jsign_up = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,9 +50,9 @@ public class LoginPage extends javax.swing.JFrame {
         loginButton.setText("Login");
         loginButton.addActionListener(this::loginButtonActionPerformed);
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jButton2.setText("Sign Up");
-        jButton2.addActionListener(this::jButton2ActionPerformed);
+        jsign_up.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jsign_up.setText("Sign Up");
+        jsign_up.addActionListener(this::jsign_upActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -78,7 +78,7 @@ public class LoginPage extends javax.swing.JFrame {
                 .addContainerGap(43, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(jsign_up)
                 .addGap(229, 229, 229))
         );
         layout.setVerticalGroup(
@@ -97,7 +97,7 @@ public class LoginPage extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addComponent(loginButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jsign_up, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(77, 77, 77))
         );
 
@@ -108,12 +108,15 @@ public class LoginPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordInputActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jsign_upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jsign_upActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+//MAKE 
+
+    }//GEN-LAST:event_jsign_upActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
+        //add login if the user has matching usernama and password
         String username = usernameInput.getText();
         String password = passwordInput.getText();
 
@@ -145,10 +148,10 @@ public class LoginPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton jsign_up;
     private javax.swing.JButton loginButton;
     private javax.swing.JTextField passwordInput;
     private javax.swing.JTextField usernameInput;
