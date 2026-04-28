@@ -8,15 +8,18 @@ package com.mycompany.text_editor;
  *
  * @author djzon
  */
-public class LoginPage extends javax.swing.JFrame {
+public class SignUpPage extends javax.swing.JFrame {
+    private Login login;
+    
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPage.class.getName());
 
     /**
      * Creates new form LoginPage
      */
-    public LoginPage() {
+    public SignUpPage() {
         initComponents();
+        login = new Login();
     }
 
     /**
@@ -33,22 +36,18 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         usernameInput = new javax.swing.JTextField();
         passwordInput = new javax.swing.JTextField();
-        loginButton = new javax.swing.JButton();
         jsign_up = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Microsoft Tai Le", 1, 36)); // NOI18N
-        jLabel1.setText("Welcome to The Greatest Text Editor");
+        jLabel1.setText("Enter a Username and Password");
 
         jLabel2.setText("Username:");
 
         jLabel3.setText("Password:");
 
         passwordInput.addActionListener(this::passwordInputActionPerformed);
-
-        loginButton.setText("Login");
-        loginButton.addActionListener(this::loginButtonActionPerformed);
 
         jsign_up.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jsign_up.setText("Sign Up");
@@ -73,13 +72,9 @@ public class LoginPage extends javax.swing.JFrame {
                             .addComponent(usernameInput)
                             .addComponent(passwordInput, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(300, 300, 300)
-                        .addComponent(loginButton)))
+                        .addGap(271, 271, 271)
+                        .addComponent(jsign_up)))
                 .addContainerGap(43, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jsign_up)
-                .addGap(229, 229, 229))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,11 +89,9 @@ public class LoginPage extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(passwordInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
-                .addComponent(loginButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
-                .addComponent(jsign_up, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77))
+                .addGap(29, 29, 29)
+                .addComponent(jsign_up)
+                .addContainerGap(208, Short.MAX_VALUE))
         );
 
         pack();
@@ -110,23 +103,15 @@ public class LoginPage extends javax.swing.JFrame {
 
     private void jsign_upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jsign_upActionPerformed
         // TODO add your handling code here:
-        SignUpPage signuppage = new SignUpPage();
-        signuppage.setLocation(this.getLocation());
-        signuppage.setVisible(true);
-
-        this.setVisible(false); 
+        String username = usernameInput.getText();
+        String password = passwordInput.getText();
+        
+        User user = new User(username, password);
+        login.addUser(user);
         
 //MAKE 
 
     }//GEN-LAST:event_jsign_upActionPerformed
-
-    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        // TODO add your handling code here:
-        //add login if the user has matching usernama and password
-        String username = usernameInput.getText();
-        String password = passwordInput.getText();
-
-    }//GEN-LAST:event_loginButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,7 +143,6 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton jsign_up;
-    private javax.swing.JButton loginButton;
     private javax.swing.JTextField passwordInput;
     private javax.swing.JTextField usernameInput;
     // End of variables declaration//GEN-END:variables

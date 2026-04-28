@@ -66,4 +66,33 @@ public class Login {
         }
         return users;
     }
+    
+    
+    public boolean getIn(String username, String password) {
+        // Search users using a keyword (e.g., name or email).
+        // Use SQL LIKE with wildcards (%) for flexible matching.
+        // Return a list of matching User objects.
+        // return null;
+        boolean status = false;
+        String sql = "SELECT * FROM users WHERE username = ? and password = ?";
+
+        try (Connection conn = Config.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    System.out.println("Exists");
+                    status = true;
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            status = false;
+        }
+        return status;
+    }
+    
 }
