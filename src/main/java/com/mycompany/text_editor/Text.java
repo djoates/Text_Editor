@@ -12,10 +12,14 @@ public class Text {
 
     private String fileName;
     private String fileContents;
+    private boolean bold;
+    private boolean italicized;
 
-    public Text(String fileName, String fileContents) {
+    public Text(String fileName, String fileContents, boolean bold, boolean italicized) {
         this.fileName = fileName;
         this.fileContents = fileContents;
+        this.bold = bold;
+        this.italicized = italicized;
     }
 
     public String getFileName() {
@@ -32,6 +36,22 @@ public class Text {
 
     public void setFileContents(String fileContents) {
         this.fileContents = fileContents;
+    }
+
+    public boolean isBold() {
+        return bold;
+    }
+
+    public void setBold(boolean bold) {
+        this.bold = bold;
+    }
+
+    public boolean isItalicized() {
+        return italicized;
+    }
+
+    public void setItalicized(boolean italicized) {
+        this.italicized = italicized;
     }
 
 }

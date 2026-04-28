@@ -24,7 +24,8 @@ public class TEGUI extends javax.swing.JFrame {
 
     }
     private UndoManager undoManager = new UndoManager();
-    public boolean bold = false;
+public boolean bold;
+
 
     /**
      * This method is called from within the constructor to initialize the form.
