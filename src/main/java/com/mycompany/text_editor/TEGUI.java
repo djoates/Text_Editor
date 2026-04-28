@@ -9,7 +9,7 @@ package com.mycompany.text_editor;
  * @author Alex
  */
 public class TEGUI extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TEGUI.class.getName());
 
     /**
@@ -89,7 +89,7 @@ public class TEGUI extends javax.swing.JFrame {
         //get text
         String text = jTextfield.getText();
         //ADD thing to save to database
-        
+
     }//GEN-LAST:event_jSAVEBTMousePressed
 
     /**

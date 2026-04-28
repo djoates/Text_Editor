@@ -19,19 +19,15 @@ import java.util.ArrayList;
  * @author djzon
  */
 public class Login {
-    public void addUser(User user)
-    {
+
+    public void addUser(User user) {
         String sql = "INSERT INTO customers (username, password) VALUES (?, ?)";
 
-        
-        try (Connection conn = Config.getConnection(); 
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Config.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
 
-            
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {
@@ -43,7 +39,7 @@ public class Login {
             e.printStackTrace();
         }
     }
-    
+
     public List<User> searchUsers(String username, String password) {
         // Search users using a keyword (e.g., name or email).
         // Use SQL LIKE with wildcards (%) for flexible matching.
@@ -51,21 +47,18 @@ public class Login {
         // return null;
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users WHERE username = ? and password = ?";
-        
-        try (Connection conn = Config.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            
+
+        try (Connection conn = Config.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, username);
             pstmt.setString(2, password);
-            
+
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     User user = new User();
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
-                    
-                    
+
                 }
             }
         } catch (SQLException e) {

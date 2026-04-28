@@ -9,19 +9,15 @@ package com.mycompany.text_editor;
  * @author djzon
  */
 public class Text {
+
     private String fileName;
     private String fileContents;
 
-    
-    
     public Text(String fileName, String fileContents) {
         this.fileName = fileName;
         this.fileContents = fileContents;
     }
 
-    
-    
-    
     public String getFileName() {
         return fileName;
     }
@@ -37,8 +33,5 @@ public class Text {
     public void setFileContents(String fileContents) {
         this.fileContents = fileContents;
     }
-    
-    
-    
-    
+
 }

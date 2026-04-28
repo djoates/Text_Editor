@@ -9,7 +9,7 @@ package com.mycompany.text_editor;
  * @author djzon
  */
 public class LoginPage extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPage.class.getName());
 
     /**
@@ -116,7 +116,7 @@ public class LoginPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         String username = usernameInput.getText();
         String password = passwordInput.getText();
-               
+
     }//GEN-LAST:event_loginButtonActionPerformed
 
     /**

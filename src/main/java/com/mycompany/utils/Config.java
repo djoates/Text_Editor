@@ -15,7 +15,6 @@ import java.sql.SQLException;
 public class Config {
 
     // TODO: Set your database host, port, username, password, and database name
-
     private static String host = "172.172.161.211";        // Example: "localhost" or IP of your DB server
     private static String port = "3306";           // MySQL default port is 3306
     private static String uname = "student";      // Your DB username
@@ -32,11 +31,11 @@ public class Config {
 
     /**
      * Returns a singleton database connection.
+     *
      * @return Connection
-     * 
-     * - Loads the MySQL JDBC driver
-     * - Creates the connection only once (singleton pattern)
-     * - Handles SQL and ClassNotFound exceptions
+     *
+     * - Loads the MySQL JDBC driver - Creates the connection only once
+     * (singleton pattern) - Handles SQL and ClassNotFound exceptions
      */
     public static Connection getConnection() {
         try {
@@ -67,4 +66,3 @@ public class Config {
     }
 
 }
- 
