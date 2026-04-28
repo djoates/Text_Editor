@@ -1,0 +1,11 @@
+users
+
+username 
+password
+
+
+
+tewxr
+id int auto_increment primary key
+username vsar
+text TEXT
