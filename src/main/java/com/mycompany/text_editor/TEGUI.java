@@ -11,6 +11,7 @@ import javax.swing.undo.UndoManager;
  *
  * @author Alex
  */
+
 public class TEGUI extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TEGUI.class.getName());
@@ -24,9 +25,8 @@ public class TEGUI extends javax.swing.JFrame {
 
     }
     private UndoManager undoManager = new UndoManager();
-public boolean bold;
-
-
+    public boolean bold = false;
+public boolean italic = false;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,10 +40,13 @@ public boolean bold;
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextfield = new javax.swing.JTextArea();
         jSAVEBT = new javax.swing.JButton();
-        jToolBar1 = new javax.swing.JToolBar();
-        jundo = new javax.swing.JButton();
-        jredo = new javax.swing.JButton();
-        jBold_btn = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jUndo = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jbold = new javax.swing.JMenuItem();
+        jItalic = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,21 +62,6 @@ public boolean bold;
         });
         jSAVEBT.addActionListener(this::jSAVEBTActionPerformed);
 
-        jToolBar1.setRollover(true);
-
-        jundo.setText("Undo");
-        jundo.addActionListener(this::jundoActionPerformed);
-        jToolBar1.add(jundo);
-
-        jredo.setText("Redo");
-        jredo.addActionListener(this::jredoActionPerformed);
-        jToolBar1.add(jredo);
-
-        jBold_btn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jBold_btn.setText("Bold");
-        jBold_btn.addActionListener(this::jBold_btnActionPerformed);
-        jToolBar1.add(jBold_btn);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -84,21 +72,49 @@ public boolean bold;
                 .addGap(91, 91, 91))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE)
                 .addGap(31, 31, 31))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
+                .addGap(33, 33, 33)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSAVEBT, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+
+        jUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jUndo.setText("Undo");
+        jUndo.addActionListener(this::jUndoActionPerformed);
+        jMenu2.add(jUndo);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setText("Redo");
+        jMenuItem1.addActionListener(this::jMenuItem1ActionPerformed);
+        jMenu2.add(jMenuItem1);
+
+        jbold.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jbold.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jbold.setText("Bold");
+        jbold.addActionListener(this::jboldActionPerformed);
+        jMenu2.add(jbold);
+
+        jItalic.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jItalic.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jItalic.setText("Italic");
+        jItalic.addActionListener(this::jItalicActionPerformed);
+        jMenu2.add(jItalic);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,7 +124,9 @@ public boolean bold;
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -125,69 +143,99 @@ public boolean bold;
 
     }//GEN-LAST:event_jSAVEBTMousePressed
 
-    private void jundoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jundoActionPerformed
+    private void jUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUndoActionPerformed
         // TODO add your handling code here:
         if (undoManager.canUndo()) {
             undoManager.undo();
         }
 
-    }//GEN-LAST:event_jundoActionPerformed
+    }//GEN-LAST:event_jUndoActionPerformed
 
-    private void jredoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jredoActionPerformed
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
         if (undoManager.canRedo()) {
             undoManager.redo();
         }
-    }//GEN-LAST:event_jredoActionPerformed
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jBold_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBold_btnActionPerformed
+    private void jboldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jboldActionPerformed
         // TODO add your handling code here:
-        // get the curent font
-
         if (!bold) {
             Font currentFont = jTextfield.getFont();
             // make it bold based on what is currently in the text area
             Font boldFont = new Font(currentFont.getName(), Font.BOLD, currentFont.getSize());
             // next apply it
             jTextfield.setFont(boldFont);
+            bold = true;
+        } else if (bold) {
+            Font currentFont = jTextfield.getFont();
+            // make it bold based on what is currently in the text area
+            Font boldFont = new Font(currentFont.getName(), Font.PLAIN, currentFont.getSize());
+            // next apply it
+            jTextfield.setFont(boldFont);
+            bold = false;
+        }
+    }//GEN-LAST:event_jboldActionPerformed
+
+    private void jItalicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jItalicActionPerformed
+        // TODO add your handling code here:
+        if (!italic) {
+            Font currentFont = jTextfield.getFont();
+            // make it bold based on what is currently in the text area
+            Font boldFont = new Font(currentFont.getName(), Font.ITALIC, currentFont.getSize());
+            // next apply it
+            jTextfield.setFont(boldFont);
+            italic = true;
+        } else if (italic) {
+            Font currentFont = jTextfield.getFont();
+            // make it bold based on what is currently in the text area
+            Font boldFont = new Font(currentFont.getName(), Font.PLAIN, currentFont.getSize());
+            // next apply it
+            jTextfield.setFont(boldFont);
+            italic = false;
         }
 
+    
 
-    }//GEN-LAST:event_jBold_btnActionPerformed
+
+    }//GEN-LAST:event_jItalicActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new TEGUI().setVisible(true));
+    } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+        logger.log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(() -> new TEGUI().setVisible(true));
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBold_btn;
+    private javax.swing.JMenuItem jItalic;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jSAVEBT;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextfield;
-    private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JButton jredo;
-    private javax.swing.JButton jundo;
+    private javax.swing.JMenuItem jUndo;
+    private javax.swing.JMenuItem jbold;
     // End of variables declaration//GEN-END:variables
 }
