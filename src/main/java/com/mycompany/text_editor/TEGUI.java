@@ -174,7 +174,18 @@ public class TEGUI extends javax.swing.JFrame {
             // next apply it
             jTextfield.setFont(boldFont);
             bold = false;
+        } else if (!bold && italic) {
+            Font currentFont = jTextfield.getFont();
+            // make it bold based on what is currently in the text area
+            Font boldFont = new Font(currentFont.getName(), Font.BOLD + Font.ITALIC, currentFont.getSize());
+            // next apply it
+            jTextfield.setFont(boldFont);
+            bold = true;
+            italic = true;
+
         }
+
+
     }//GEN-LAST:event_jboldActionPerformed
 
     private void jItalicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jItalicActionPerformed
@@ -193,9 +204,16 @@ public class TEGUI extends javax.swing.JFrame {
             // next apply it
             jTextfield.setFont(boldFont);
             italic = false;
+        } else if (bold && !italic) {
+            Font currentFont = jTextfield.getFont();
+            // make it bold based on what is currently in the text area
+            Font boldFont = new Font(currentFont.getName(), Font.BOLD + Font.ITALIC, currentFont.getSize());
+            // next apply it
+            jTextfield.setFont(boldFont);
+            bold = true;
+            italic = true;
+
         }
-
-
     }//GEN-LAST:event_jItalicActionPerformed
 
     /**

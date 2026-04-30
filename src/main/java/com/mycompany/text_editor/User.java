@@ -9,20 +9,22 @@ package com.mycompany.text_editor;
  * @author djzon
  */
 public class User {
+
     private int userID;
     private String username;
     private String password;
-    
-    public User(){
-        
+
+    public User() {
+
     }
-    public User(int userId, String Username, String Password){
+
+    public User(int userId, String Username, String Password) {
         this.userID = userID;
         this.username = username;
         this.password = password;
     }
-    
-    public User(String Username, String Password){
+
+    public User(String Username, String Password) {
         this.username = username;
         this.password = password;
     }
@@ -46,9 +48,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
-    
-    
-    
+
 }

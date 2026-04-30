@@ -11,6 +11,7 @@ import com.mycompany.utils.Config;
  * @author Alex
  */
 public class connection {
+
     public static void main(String[] args) {
         Config.getConnection();
     }
