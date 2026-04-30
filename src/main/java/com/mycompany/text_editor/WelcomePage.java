@@ -4,6 +4,9 @@
  */
 package com.mycompany.text_editor;
 
+import com.mycompany.utils.Config;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author Alex
@@ -17,7 +20,10 @@ public class WelcomePage extends javax.swing.JFrame {
      */
     public WelcomePage() {
         initComponents();
+        jList1.setModel(model);
+        Config.getConnection();
     }
+    DefaultListModel<String> model = new DefaultListModel<>();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,6 +40,8 @@ public class WelcomePage extends javax.swing.JFrame {
         jNewfileBT = new javax.swing.JButton();
         jcopy = new javax.swing.JButton();
         jsearchBTN = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,6 +60,13 @@ public class WelcomePage extends javax.swing.JFrame {
         jsearchBTN.setText("Search");
         jsearchBTN.addActionListener(this::jsearchBTNActionPerformed);
 
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -69,15 +84,20 @@ public class WelcomePage extends javax.swing.JFrame {
                         .addComponent(jdelete))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(60, 60, 60)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(442, Short.MAX_VALUE))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(356, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addGap(362, 362, 362)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jdelete)
                     .addComponent(jcopy)
@@ -103,6 +123,10 @@ public class WelcomePage extends javax.swing.JFrame {
     private void jsearchBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jsearchBTNActionPerformed
         // TODO add your handling code here:
         //add search function
+
+        model.addElement("Item from Button Click");
+
+
     }//GEN-LAST:event_jsearchBTNActionPerformed
 
     private void jNewfileBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNewfileBTActionPerformed
@@ -147,8 +171,10 @@ public class WelcomePage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JButton jNewfileBT;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jcopy;
     private javax.swing.JButton jdelete;
     private javax.swing.JButton jsearchBTN;

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class Login {
 
     public void addUser(User user) {
-        String sql = "INSERT INTO customers (username, password) VALUES (?, ?)";
+        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
 
         try (Connection conn = Config.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -66,8 +66,7 @@ public class Login {
         }
         return users;
     }
-    
-    
+
     public boolean getIn(String username, String password) {
         // Search users using a keyword (e.g., name or email).
         // Use SQL LIKE with wildcards (%) for flexible matching.
@@ -94,5 +93,5 @@ public class Login {
         }
         return status;
     }
-    
+
 }
