@@ -13,13 +13,13 @@ public class Text {
     private String fileName;
     private String fileContents;
     private boolean bold;
-    private boolean italicized;
+    private boolean italic;
 
-    public Text(String fileName, String fileContents, boolean bold, boolean italicized) {
+    public Text(String fileName, String fileContents, boolean bold, boolean italic) {
         this.fileName = fileName;
         this.fileContents = fileContents;
         this.bold = bold;
-        this.italicized = italicized;
+        this.italic = italic;
     }
 
     public String getFileName() {
@@ -46,12 +46,12 @@ public class Text {
         this.bold = bold;
     }
 
-    public boolean isItalicized() {
-        return italicized;
+    public boolean isItalic() {
+        return italic;
     }
 
-    public void setItalicized(boolean italicized) {
-        this.italicized = italicized;
+    public void setItalic(boolean italic) {
+        this.italic = italic;
     }
 
 }
