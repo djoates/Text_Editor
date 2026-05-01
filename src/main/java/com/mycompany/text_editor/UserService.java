@@ -4,6 +4,8 @@
  */
 package com.mycompany.text_editor;
 
+import models.User;
+import Interfaces.UserDAO;
 import com.mycompany.utils.Config;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

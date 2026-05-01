@@ -2,10 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.text_editor;
+package models;
 
 import java.util.List;
-import com.mycompany.text_editor.User;
 import com.mycompany.utils.Config;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
