@@ -10,7 +10,6 @@ package com.mycompany.text_editor;
  */
 public class User {
 
-    private int userID;
     private String username;
     private String password;
 
@@ -18,23 +17,13 @@ public class User {
 
     }
 
-    public User(int userId, String Username, String Password) {
-        this.userID = userID;
-        this.username = username;
-        this.password = password;
-    }
-
     public User(String Username, String Password) {
-        this.username = username;
-        this.password = password;
+        this.username = Username;
+        this.password = Password;
     }
 
     public String getUsername() {
         return username;
-    }
-
-    public int getUserID() {
-        return userID;
     }
 
     public String getPassword() {

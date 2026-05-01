@@ -4,6 +4,8 @@
  */
 package com.mycompany.text_editor;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author djzon
@@ -11,12 +13,14 @@ package com.mycompany.text_editor;
 public class LoginPage extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPage.class.getName());
+    private UserService userService;
 
     /**
      * Creates new form LoginPage
      */
     public LoginPage() {
         initComponents();
+        userService = new UserService();
     }
 
     /**
@@ -114,8 +118,8 @@ public class LoginPage extends javax.swing.JFrame {
         signuppage.setLocation(this.getLocation());
         signuppage.setVisible(true);
 
-        this.setVisible(false); 
-        
+        this.setVisible(false);
+
 //MAKE 
 
     }//GEN-LAST:event_jsign_upActionPerformed
@@ -123,9 +127,27 @@ public class LoginPage extends javax.swing.JFrame {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
         //add login if the user has matching usernama and password
+
         String username = usernameInput.getText();
         String password = passwordInput.getText();
+//check database for user with username and password
+        User user = userService.checkUser(username, password);
+        if (user != null) {
+//if user exists then go to welcome page
+            WelcomePage WelcomePage = new WelcomePage();
+            WelcomePage.setLocation(this.getLocation());
+            WelcomePage.setVisible(true);
 
+            this.setVisible(false);
+        } else {
+// Login failed
+//if user doesn't exist then dispay error
+            JOptionPane.showMessageDialog(rootPane,
+                    "Invalid username or password!",
+                    "Login Failed",
+                    JOptionPane.ERROR_MESSAGE);
+
+        }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     /**

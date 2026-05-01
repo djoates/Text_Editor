@@ -9,5 +9,5 @@ package com.mycompany.text_editor;
  * @author Alex
  */
 public class Welcome_page_connector {
-    
+
 }

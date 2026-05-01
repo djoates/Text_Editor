@@ -4,13 +4,15 @@
  */
 package com.mycompany.text_editor;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author djzon
  */
 public class SignUpPage extends javax.swing.JFrame {
+
     private Login login;
-    
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPage.class.getName());
 
@@ -105,10 +107,14 @@ public class SignUpPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         String username = usernameInput.getText();
         String password = passwordInput.getText();
-        
+
         User user = new User(username, password);
         login.addUser(user);
-        
+        // Login failed
+        JOptionPane.showMessageDialog(rootPane,
+                "Signup successful!",
+                "Signup successful",
+                JOptionPane.INFORMATION_MESSAGE);
 //MAKE 
 
     }//GEN-LAST:event_jsign_upActionPerformed
