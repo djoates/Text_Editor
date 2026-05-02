@@ -21,6 +21,7 @@ public class WelcomePage extends javax.swing.JFrame {
         initComponents();
 
         Config.getConnection();
+
     }
 
     /**

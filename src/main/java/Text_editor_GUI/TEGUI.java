@@ -42,6 +42,7 @@ public class TEGUI extends javax.swing.JFrame {
         jSAVEBT = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jUndo = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -86,6 +87,11 @@ public class TEGUI extends javax.swing.JFrame {
         );
 
         jMenu1.setText("File");
+
+        jMenuItem2.setText("Exit");
+        jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
+        jMenu1.add(jMenuItem2);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -199,6 +205,17 @@ public class TEGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jItalicActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        WelcomePage WelcomePage = new WelcomePage();
+        WelcomePage.setLocation(this.getLocation());
+        WelcomePage.setVisible(true);
+
+        this.setVisible(false);
+
+
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -230,6 +247,7 @@ public class TEGUI extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jSAVEBT;
     private javax.swing.JScrollPane jScrollPane1;
