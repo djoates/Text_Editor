@@ -23,10 +23,13 @@ public class Note {
     }
 
     public Note(String fileName, String fileContents, boolean bold, boolean italic) {
+        
+    }
+
+
+    public Note(String fileName, String fileContents) {
         this.fileName = fileName;
         this.fileContents = fileContents;
-        this.bold = bold;
-        this.italic = italic;
     }
     
     public void Save(String contents){
@@ -50,22 +53,6 @@ public class Note {
 
     public void setFileContents(String fileContents) {
         this.fileContents = fileContents;
-    }
-
-    public boolean isBold() {
-        return bold;
-    }
-
-    public void setBold(boolean bold) {
-        this.bold = bold;
-    }
-
-    public boolean isItalic() {
-        return italic;
-    }
-
-    public void setItalic(boolean italic) {
-        this.italic = italic;
     }
 
 }
