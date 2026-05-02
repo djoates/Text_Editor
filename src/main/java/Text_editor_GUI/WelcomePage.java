@@ -5,6 +5,9 @@
 package Text_editor_GUI;
 
 import com.mycompany.utils.Config;
+import com.mycompany.text_editor.NotesService;
+import javax.swing.JOptionPane;
+import models.Note;
 
 /**
  *
@@ -13,14 +16,15 @@ import com.mycompany.utils.Config;
 public class WelcomePage extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(WelcomePage.class.getName());
-
+    private NotesService notesService;
     /**
      * Creates new form WelcomePage
      */
     public WelcomePage() {
         initComponents();
-
+        
         Config.getConnection();
+        notesService = new NotesService();
     }
 
     /**
@@ -132,7 +136,9 @@ public class WelcomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_jsearchBTNActionPerformed
 
     private void jNewfileBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNewfileBTActionPerformed
-
+        String title = JOptionPane.showInputDialog("Enter the Note Title");
+        Note note = new Note(title);
+        notesService.CreateText(note);
         //add new file function
     }//GEN-LAST:event_jNewfileBTActionPerformed
 

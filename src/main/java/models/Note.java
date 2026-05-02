@@ -8,20 +8,34 @@ package models;
  *
  * @author djzon
  */
-public class Text {
+public class Note {
 
     private String fileName;
     private String fileContents;
     private boolean bold;
     private boolean italic;
+    private String buffer="";
+    
+    public Note(String fileName){
+        this.fileName = fileName;
+        this.buffer = this.fileName +"||";
+        
+    }
 
-    public Text(String fileName, String fileContents, boolean bold, boolean italic) {
+    public Note(String fileName, String fileContents, boolean bold, boolean italic) {
         this.fileName = fileName;
         this.fileContents = fileContents;
         this.bold = bold;
         this.italic = italic;
     }
-
+    
+    public void Save(String contents){
+        buffer = this.fileName +"||" + contents;
+    }
+    
+    public String getSave(){
+        return buffer;
+    }
     public String getFileName() {
         return fileName;
     }
