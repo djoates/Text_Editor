@@ -19,7 +19,7 @@ public class NotesService {
     public void CreateText(Note note){
         try {
             // SQL query with placeholders (?) for values we will set later
-            String sql = "INSERT INTO users (text) VALUES (?)";
+            String sql = "INSERT INTO notes (username) VALUES (?)";
 
             // Get the database connection and prepare the statement
             PreparedStatement preparedStatement = Config.getConnection().prepareStatement(sql);
