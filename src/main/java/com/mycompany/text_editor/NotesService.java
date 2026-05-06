@@ -23,7 +23,11 @@ public class NotesService {
     public void CreateText(Note note){
         try {
             // SQL query with placeholders (?) for values we will set later
+<<<<<<< HEAD
             String sql = "INSERT INTO notes (text) VALUES (?)";
+=======
+            String sql = "INSERT INTO notes (username) VALUES (?)";
+>>>>>>> ed478c31f81613e7559a79e7209133c11dbb5678
 
             // Get the database connection and prepare the statement
             PreparedStatement preparedStatement = Config.getConnection().prepareStatement(sql);
@@ -50,7 +54,11 @@ public class NotesService {
     public void SaveText(Note text){
         try {
             // SQL query with placeholders (?) for values we will set later
+<<<<<<< HEAD
             String sql = "INSERT INTO notes (text) VALUES (?)";
+=======
+            String sql = "INSERT INTO notes (username) VALUES (?)";
+>>>>>>> ed478c31f81613e7559a79e7209133c11dbb5678
 
             // Get the database connection and prepare the statement
             PreparedStatement preparedStatement = Config.getConnection().prepareStatement(sql);
