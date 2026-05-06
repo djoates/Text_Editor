@@ -17,11 +17,11 @@ public class Note {
     private String username;
     private String buffer="";
     
-    public Note(String fileName, String string, String username){
+    public Note(String fileName, String fileContents, String username) {
         this.fileName = fileName;
-        this.buffer = this.fileName +"||";
+        // If fileContents is null, set it to an empty string instead
+        this.fileContents = (fileContents == null) ? "" : fileContents;
         this.username = username;
-        
     }
 
     public Note(String fileName, String fileContents, boolean bold, boolean italic) {
@@ -60,6 +60,10 @@ public class Note {
 
     public void setFileContents(String fileContents) {
         this.fileContents = fileContents;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
 }

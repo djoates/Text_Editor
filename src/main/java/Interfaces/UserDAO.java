@@ -12,8 +12,16 @@ import java.util.List;
  */
 
 public interface UserDAO {
-    void addUser(User user);                           // Add a new room
-    List<User> getAllUsers();                         // Retrieve all rooms
-    User checkUser(String username , String password);                     // Find room by ID
-    
+
+    // Create: Used for registration
+    void addUser(User user);
+
+    // Read: Used for admin lists or debugging
+    List<User> getAllUsers();
+
+    // Authenticate: Used for login
+    User checkUser(String username, String password);
+
+    // Validation: Prevents duplicate usernames during registration
+    boolean isUsernameTaken(String username);
 }

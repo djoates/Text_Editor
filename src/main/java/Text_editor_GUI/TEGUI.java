@@ -5,8 +5,10 @@
 package Text_editor_GUI;
 
 import java.awt.Font;
+import javax.swing.text.StyledEditorKit;
 import javax.swing.undo.UndoManager;
 import models.Note;
+
 
 /**
  *
@@ -21,29 +23,57 @@ public class TEGUI extends javax.swing.JFrame {
     private UndoManager undoManager = new UndoManager();
     public boolean bold = false;
     public boolean italic = false;
+    private javax.swing.Timer autoSaveTimer;
     /**
      * Creates new form TEGUI
      */
     public TEGUI(String title, String username) {
-        initComponents();
-        jTextfield.getDocument().addUndoableEditListener(undoManager);
-        
-        this.currentTitle = title;
-        this.currentUser = username;
-        this.setTitle("Editing: " + title + " (User: " + username + ")");
-        
-        jTextfield.getDocument().addUndoableEditListener(undoManager);
-        
-        // Load the content from database immediately
-        loadNoteContent();
+            initComponents();
+            // 1. Tell the pane to handle HTML
+            jTextPane1.setContentType("text/html");
+
+            this.currentTitle = title;
+            this.currentUser = username;
+
+            // 2. Load content (which will now be HTML strings)
+            loadNoteContent();
+            autoSaveTimer = new javax.swing.Timer(15000,new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                System.out.println("Auto-saving..."); // Optional: for your console
+                Save(false);
+            }
+        });
+
+        autoSaveTimer.start();
+
+            // 3. Attach UndoManager
+            jTextPane1.getDocument().addUndoableEditListener(undoManager);
 
     }
     
     private void loadNoteContent() {
-        // Use the method we created in NotesService to fetch the text
         Note note = notesService.getSpecificNote(currentTitle, currentUser);
         if (note != null) {
-            jTextfield.setText(note.getFileContents());
+            // The text coming from the DB now contains <b> and <i> tags
+            jTextPane1.setText(note.getFileContents());
+        }
+    }
+    
+    private void Save(boolean popUp) {
+        java.io.StringWriter sw = new java.io.StringWriter();
+        try {
+            jTextPane1.getEditorKit().write(sw, jTextPane1.getDocument(), 0, jTextPane1.getDocument().getLength());
+            String htmlContent = sw.toString();
+
+            models.Note noteToSave = new models.Note(currentTitle, htmlContent, currentUser);
+            notesService.SaveText(noteToSave);
+
+            if (popUp) {
+                javax.swing.JOptionPane.showMessageDialog(this, "File Saved!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -57,9 +87,9 @@ public class TEGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextfield = new javax.swing.JTextArea();
         jSAVEBT = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -71,10 +101,6 @@ public class TEGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextfield.setColumns(20);
-        jTextfield.setRows(5);
-        jScrollPane1.setViewportView(jTextfield);
-
         jSAVEBT.setText("Save");
         jSAVEBT.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -83,25 +109,27 @@ public class TEGUI extends javax.swing.JFrame {
         });
         jSAVEBT.addActionListener(this::jSAVEBTActionPerformed);
 
+        jScrollPane2.setViewportView(jTextPane1);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(542, Short.MAX_VALUE)
                 .addComponent(jSAVEBT)
                 .addGap(91, 91, 91))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE)
-                .addGap(31, 31, 31))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSAVEBT, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -160,21 +188,12 @@ public class TEGUI extends javax.swing.JFrame {
 
     private void jSAVEBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSAVEBTActionPerformed
         // TODO add your handling code here:
+        Save(true);
         
     }//GEN-LAST:event_jSAVEBTActionPerformed
 
     private void jSAVEBTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSAVEBTMousePressed
-        // 1. Get the current text from the JTextArea
-        String text = jTextfield.getText();
-
-        // 2. Create the Note object using the session details
-        Note noteToSave = new Note(currentTitle, text, currentUser);
-
-        // 3. Save to database using the SaveText method
-        notesService.SaveText(noteToSave);
-
-        // 4. Optional: Show a confirmation to the user
-        javax.swing.JOptionPane.showMessageDialog(this, "File saved successfully!");
+        // Use an output stream to capture the HTML str
 
     }//GEN-LAST:event_jSAVEBTMousePressed
 
@@ -195,69 +214,37 @@ public class TEGUI extends javax.swing.JFrame {
 
     private void jboldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jboldActionPerformed
         // TODO add your handling code here:
-        if (!bold) {
-            Font currentFont = jTextfield.getFont();
-            // make it bold based on what is currently in the text area
-            Font boldFont = new Font(currentFont.getName(), Font.BOLD, currentFont.getSize());
-            // next apply it
-            jTextfield.setFont(boldFont);
-            bold = true;
-        } else if (bold) {
-            Font currentFont = jTextfield.getFont();
-            // make it bold based on what is currently in the text area
-            Font boldFont = new Font(currentFont.getName(), Font.PLAIN, currentFont.getSize());
-            // next apply it
-            jTextfield.setFont(boldFont);
-            bold = false;
-        }
+        // This looks at the highlighted text and toggles Bold
+        new StyledEditorKit.BoldAction().actionPerformed(evt);
+        jTextPane1.requestFocusInWindow();
 
 
     }//GEN-LAST:event_jboldActionPerformed
 
     private void jItalicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jItalicActionPerformed
         // TODO add your handling code here:
-        if (!italic) {
-            Font currentFont = jTextfield.getFont();
-            // make it bold based on what is currently in the text area
-            Font boldFont = new Font(currentFont.getName(), Font.ITALIC, currentFont.getSize());
-            // next apply it
-            jTextfield.setFont(boldFont);
-            italic = true;
-        } else if (italic) {
-            Font currentFont = jTextfield.getFont();
-            // make it bold based on what is currently in the text area
-            Font boldFont = new Font(currentFont.getName(), Font.PLAIN, currentFont.getSize());
-            // next apply it
-            jTextfield.setFont(boldFont);
-            italic = false;
-        }
+        new StyledEditorKit.ItalicAction().actionPerformed(evt);
+        jTextPane1.requestFocusInWindow();
 
     }//GEN-LAST:event_jItalicActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        String currentText = jTextfield.getText();
-        Note originalNote = notesService.getSpecificNote(currentTitle, currentUser);
-
-        // Check if the text has changed since the last save
-        if (originalNote != null && !currentText.equals(originalNote.getFileContents())) {
-            int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
-                    "You have unsaved changes. Exit anyway?", "Unsaved Changes",
-                    javax.swing.JOptionPane.YES_NO_OPTION);
-
-            if (confirm != javax.swing.JOptionPane.YES_OPTION) {
-                return; // Stay on the page
-            }
+      // Create a StringWriter to get the current HTML content exactly how it's saved
+        if (autoSaveTimer != null) {
+            autoSaveTimer.stop();
         }
+        Save(true);
 
         WelcomePage welcome = new WelcomePage(this.currentUser);
-        welcome.setLocation(this.getLocation());
         welcome.setVisible(true);
         this.dispose();
+    
 
 
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
@@ -292,8 +279,8 @@ public class TEGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jSAVEBT;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextfield;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JMenuItem jUndo;
     private javax.swing.JMenuItem jbold;
     // End of variables declaration//GEN-END:variables

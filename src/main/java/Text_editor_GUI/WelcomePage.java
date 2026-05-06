@@ -10,6 +10,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Note;
+import javax.swing.text.StyledEditorKit;
+import java.io.StringWriter;
 
 /**
  *
@@ -17,25 +19,24 @@ import models.Note;
  */
 public class WelcomePage extends javax.swing.JFrame {
 
+    private javax.swing.DefaultListModel<String> listModel = new javax.swing.DefaultListModel<>();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(WelcomePage.class.getName());
     private NotesService notesService;
     private String username;
+    private javax.swing.Timer autoSaveTimer;
     /**
      * Creates new form WelcomePage
      */
+    
+    
     public WelcomePage(String username) {
         initComponents();
         this.username = username;
         Config.getConnection();
         notesService = new NotesService();
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            jTable1MouseClicked(evt);
-        }
-        });
-        
-        loadTableData();
+              
+        jNoteList.setModel(listModel);
+        loadListData();
     }
 
     private WelcomePage() {
@@ -57,8 +58,9 @@ public class WelcomePage extends javax.swing.JFrame {
         jNewfileBT = new javax.swing.JButton();
         jcopy = new javax.swing.JButton();
         jsearchBTN = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jNoteList = new javax.swing.JList<>();
+        LogOut = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,18 +79,20 @@ public class WelcomePage extends javax.swing.JFrame {
         jsearchBTN.setText("Search");
         jsearchBTN.addActionListener(this::jsearchBTNActionPerformed);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        jNoteList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jNoteList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jNoteListMouseClicked(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        });
+        jScrollPane2.setViewportView(jNoteList);
+
+        LogOut.setText("Log Out");
+        LogOut.addActionListener(this::LogOutActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -97,7 +101,7 @@ public class WelcomePage extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(309, 309, 309)
+                        .addGap(315, 315, 315)
                         .addComponent(jsearchBTN)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jNewfileBT)
@@ -106,27 +110,35 @@ public class WelcomePage extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jdelete))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(348, Short.MAX_VALUE))
+                        .addGap(228, 228, 228)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(402, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LogOut)
+                .addGap(84, 84, 84))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(LogOut)))
+                .addGap(52, 52, 52)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jdelete)
                     .addComponent(jcopy)
                     .addComponent(jNewfileBT)
                     .addComponent(jsearchBTN))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -148,13 +160,11 @@ public class WelcomePage extends javax.swing.JFrame {
         //add search function
         String query = JOptionPane.showInputDialog(this, "Search for file title:");
         if (query != null) {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0);
-
+            listModel.removeAllElements(); // Clear the list
             List<Note> notes = notesService.getNotesByUser(this.username);
             for (Note note : notes) {
                 if (note.getFileName().toLowerCase().contains(query.toLowerCase())) {
-                    model.addRow(new Object[]{note.getFileName(), note.getFileContents()});
+                    listModel.addElement(note.getFileName());
                 }
             }
         }
@@ -164,36 +174,30 @@ public class WelcomePage extends javax.swing.JFrame {
 
     private void jNewfileBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNewfileBTActionPerformed
         String title = JOptionPane.showInputDialog("Enter the Note Title");
-    
-        // Check if user clicked cancel or entered nothing
         if (title != null && !title.trim().isEmpty()) {
-            // Pass the title, initial empty content, and the current session username
-            Note note = new Note(title, "", this.username); 
+            Note note = new Note(title, "", this.username);
             notesService.CreateText(note);
 
-            
-    }
-        loadTableData();
+            // No need to refresh here because we are closing this page
+            TEGUI editor = new TEGUI(title, this.username);
+            editor.setVisible(true);
+            this.dispose();
+        }
         //add new file function
     }//GEN-LAST:event_jNewfileBTActionPerformed
 
     private void jcopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcopyActionPerformed
         // TODO add your handling code here:
         //add copy function
-        int row = jTable1.getSelectedRow();
-        if (row != -1) {
-            String originalTitle = jTable1.getValueAt(row, 0).toString();
+        String originalTitle = jNoteList.getSelectedValue(); // Get from List, not Table
+        if (originalTitle != null) {
             String newTitle = JOptionPane.showInputDialog(this, "Enter name for duplicate:", originalTitle + "_copy");
-
             if (newTitle != null && !newTitle.trim().isEmpty()) {
-                // Fetch the original note content
                 Note originalNote = notesService.getSpecificNote(originalTitle, this.username);
-
                 if (originalNote != null) {
-                    // Create a new note with the same content but new title
                     Note duplicateNote = new Note(newTitle, originalNote.getFileContents(), this.username);
                     notesService.CreateText(duplicateNote);
-                    loadTableData(); // Refresh list
+                    loadListData(); // Refresh the list
                 }
             }
         } else {
@@ -202,10 +206,10 @@ public class WelcomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_jcopyActionPerformed
 
     private void jdeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jdeleteActionPerformed
-        int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1) {
+        int selectedIndex = jNoteList.getSelectedIndex();
+        if (selectedIndex != -1) {
             // Get the title from the first column of your table
-            String title = jTable1.getValueAt(selectedRow, 0).toString();
+            String title = jNoteList.getSelectedValue();
 
             int confirm = JOptionPane.showConfirmDialog(this, "Delete " + title + "?");
             if (confirm == JOptionPane.YES_OPTION) {
@@ -215,52 +219,61 @@ public class WelcomePage extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Please select a file to delete.");
         }
-        loadTableData();
+        loadListData();
         //add delete function
     }//GEN-LAST:event_jdeleteActionPerformed
+
+    private void jNoteListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jNoteListMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) { 
+        // Get the index of the item that was double-clicked
+        int index = jNoteList.locationToIndex(evt.getPoint());
+        
+        if (index != -1) {
+            String selectedTitle = jNoteList.getModel().getElementAt(index);
+            
+            // Switch to TEGUI
+            TEGUI editor = new TEGUI(selectedTitle, this.username);
+            editor.setVisible(true);
+            editor.setLocationRelativeTo(this);
+            this.dispose();
+        }
+    }
+    }//GEN-LAST:event_jNoteListMouseClicked
+
+    private void LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogOutActionPerformed
+        // TODO add your handling code here:
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to Log Out??", "Log Out",
+                    javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (confirm == javax.swing.JOptionPane.NO_OPTION) {
+            return; // Stay on the page
+        }
+        else{
+            LoginPage l = new LoginPage();
+            l.setVisible(true);
+            this.dispose();
+        }
+        
+        
+    }//GEN-LAST:event_LogOutActionPerformed
 
     /**
      * @param args the command line arguments
      */
     
-    public final void loadTableData() {
-        // 1. Get the list of notes for the current user
+    public void loadListData() {
+        listModel.removeAllElements();
+        jNoteList.setModel(listModel);
+
         List<Note> notes = notesService.getNotesByUser(this.username);
-
-        // 2. Access the table's model
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
-        // 3. Clear existing rows to avoid duplicates
-        model.setRowCount(0);
-
-        // 4. Define column headers (Title and Preview)
-        model.setColumnIdentifiers(new String[]{"File Name", "Content Preview"});
-
-        // 5. Add notes to the table
         for (Note note : notes) {
-            String preview = note.getFileContents();
-            // Shorten preview if it's too long
-            if (preview.length() > 50) preview = preview.substring(0, 47) + "...";
-
-            model.addRow(new Object[]{note.getFileName(), preview});
-    }
+            // The title is usually plain text, so this stays simple
+            listModel.addElement(note.getFileName());}
 }
     
-private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
-        if (evt.getClickCount() == 2) { // Double-click detected
-        int row = jTable1.getSelectedRow();
-        if (row != -1) {
-            String title = jTable1.getValueAt(row, 0).toString();
 
-            // Create the editor, passing the selected title and current username
-            TEGUI editor = new TEGUI(title, this.username);
-            editor.setLocation(this.getLocation());
-            editor.setVisible(true);
-
-            // Close the welcome page
-            this.dispose();
-        }
-    }    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -284,11 +297,12 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton LogOut;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton jNewfileBT;
+    private javax.swing.JList<String> jNoteList;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jcopy;
     private javax.swing.JButton jdelete;
     private javax.swing.JButton jsearchBTN;

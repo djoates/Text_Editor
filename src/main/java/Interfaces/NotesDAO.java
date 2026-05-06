@@ -5,16 +5,26 @@
 package Interfaces;
 
 import java.util.List;
+import models.Note;
 
 /**
  *
  * @author Alex
  */
 public interface NotesDAO {
-//   void addCustomer(Customer customer);               // Add a new customer
-//    List<Customer> getAllCustomers();                 // Retrieve all customers
-//    Customer getCustomerById(int customerId);         // Find customer by ID
-//    List<Customer> searchCustomers(String keyword);   // Search by name or phone
-//    void updateCustomer(Customer customer);           // Update customer details
-//    void deleteCustomer(int customerId);    
+    // 1. Create a new Note entry
+    void CreateText(Note note);
+
+    // 2. Save/Update existing note content
+    void SaveText(Note note);
+
+    // 3. Delete a note
+    void DeleteNote(String title, String username);
+
+    // 4. Fetch all notes for a specific user (Used for jTable)
+    List<Note> getNotesByUser(String username);
+
+    // 5. Load the full content of a specific note
+    Note getSpecificNote(String title, String username);
+ 
 }
