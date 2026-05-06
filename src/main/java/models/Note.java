@@ -14,17 +14,23 @@ public class Note {
     private String fileContents;
     private boolean bold;
     private boolean italic;
+    private String username;
     private String buffer="";
     
-    public Note(String fileName){
+    public Note(String fileName, String string, String username){
         this.fileName = fileName;
         this.buffer = this.fileName +"||";
+        this.username = username;
         
     }
 
     public Note(String fileName, String fileContents, boolean bold, boolean italic) {
-        
-    }
+    this.fileName = fileName;
+    this.fileContents = fileContents;
+    this.bold = bold;
+    this.italic = italic;
+    this.buffer = fileName + "||" + fileContents;
+}
 
 
     public Note(String fileName, String fileContents) {
@@ -32,8 +38,9 @@ public class Note {
         this.fileContents = fileContents;
     }
     
-    public void Save(String contents){
-        buffer = this.fileName +"||" + contents;
+    public void Save(String contents) {
+        this.fileContents = contents;
+        this.buffer = this.fileName + "||" + contents;
     }
     
     public String getSave(){

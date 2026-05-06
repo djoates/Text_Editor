@@ -118,7 +118,7 @@ public class SignUpPage extends javax.swing.JFrame {
                 "Signup successful!",
                 "Signup successful",
                 JOptionPane.INFORMATION_MESSAGE);
-        WelcomePage WelcomePage = new WelcomePage();
+        WelcomePage WelcomePage = new WelcomePage(username);
         WelcomePage.setLocation(this.getLocation());
         WelcomePage.setVisible(true);
 

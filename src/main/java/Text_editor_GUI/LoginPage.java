@@ -128,28 +128,24 @@ public class LoginPage extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
-        //add login if the user has matching usernama and password
-
         String username = usernameInput.getText();
-        String password = passwordInput.getText();
-//check database for user with username and password
-        User user = userService.checkUser(username, password);
-        if (user != null) {
-//if user exists then go to welcome page
-            WelcomePage WelcomePage = new WelcomePage();
-            WelcomePage.setLocation(this.getLocation());
-            WelcomePage.setVisible(true);
+    // Using JPasswordField is better, but following your JTextField setup
+    String password = passwordInput.getText(); 
 
-            this.setVisible(false);
-        } else {
-// Login failed
-//if user doesn't exist then dispay error
-            JOptionPane.showMessageDialog(rootPane,
-                    "Invalid username or password!",
-                    "Login Failed",
-                    JOptionPane.ERROR_MESSAGE);
-
-        }
+    User user = userService.checkUser(username, password);
+    
+    if (user != null) {
+        // Pass the username to the next page so the database knows who is saving notes
+        WelcomePage welcomePage = new WelcomePage(username); 
+        welcomePage.setLocation(this.getLocation());
+        welcomePage.setVisible(true);
+        this.dispose(); // Close login window properly
+    } else {
+        JOptionPane.showMessageDialog(rootPane,
+                "Invalid username or password!",
+                "Login Failed",
+                JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     /**

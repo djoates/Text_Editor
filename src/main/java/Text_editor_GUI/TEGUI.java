@@ -6,6 +6,7 @@ package Text_editor_GUI;
 
 import java.awt.Font;
 import javax.swing.undo.UndoManager;
+import models.Note;
 
 /**
  *
@@ -14,18 +15,37 @@ import javax.swing.undo.UndoManager;
 public class TEGUI extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TEGUI.class.getName());
-
-    /**
-     * Creates new form TEGUI
-     */
-    public TEGUI() {
-        initComponents();
-        jTextfield.getDocument().addUndoableEditListener(undoManager);
-
-    }
+    private String currentTitle;
+    private String currentUser;
+    private com.mycompany.text_editor.NotesService notesService = new com.mycompany.text_editor.NotesService();
     private UndoManager undoManager = new UndoManager();
     public boolean bold = false;
     public boolean italic = false;
+    /**
+     * Creates new form TEGUI
+     */
+    public TEGUI(String title, String username) {
+        initComponents();
+        jTextfield.getDocument().addUndoableEditListener(undoManager);
+        
+        this.currentTitle = title;
+        this.currentUser = username;
+        this.setTitle("Editing: " + title + " (User: " + username + ")");
+        
+        jTextfield.getDocument().addUndoableEditListener(undoManager);
+        
+        // Load the content from database immediately
+        loadNoteContent();
+
+    }
+    
+    private void loadNoteContent() {
+        // Use the method we created in NotesService to fetch the text
+        Note note = notesService.getSpecificNote(currentTitle, currentUser);
+        if (note != null) {
+            jTextfield.setText(note.getFileContents());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -140,12 +160,21 @@ public class TEGUI extends javax.swing.JFrame {
 
     private void jSAVEBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSAVEBTActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jSAVEBTActionPerformed
 
     private void jSAVEBTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSAVEBTMousePressed
-        //get text
+        // 1. Get the current text from the JTextArea
         String text = jTextfield.getText();
-        //ADD thing to save to database
+
+        // 2. Create the Note object using the session details
+        Note noteToSave = new Note(currentTitle, text, currentUser);
+
+        // 3. Save to database using the SaveText method
+        notesService.SaveText(noteToSave);
+
+        // 4. Optional: Show a confirmation to the user
+        javax.swing.JOptionPane.showMessageDialog(this, "File saved successfully!");
 
     }//GEN-LAST:event_jSAVEBTMousePressed
 
@@ -207,11 +236,24 @@ public class TEGUI extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        WelcomePage WelcomePage = new WelcomePage();
-        WelcomePage.setLocation(this.getLocation());
-        WelcomePage.setVisible(true);
+        String currentText = jTextfield.getText();
+        Note originalNote = notesService.getSpecificNote(currentTitle, currentUser);
 
-        this.setVisible(false);
+        // Check if the text has changed since the last save
+        if (originalNote != null && !currentText.equals(originalNote.getFileContents())) {
+            int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+                    "You have unsaved changes. Exit anyway?", "Unsaved Changes",
+                    javax.swing.JOptionPane.YES_NO_OPTION);
+
+            if (confirm != javax.swing.JOptionPane.YES_OPTION) {
+                return; // Stay on the page
+            }
+        }
+
+        WelcomePage welcome = new WelcomePage(this.currentUser);
+        welcome.setLocation(this.getLocation());
+        welcome.setVisible(true);
+        this.dispose();
 
 
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -238,7 +280,7 @@ public class TEGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new TEGUI().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new TEGUI("title", "guest").setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -6,7 +6,9 @@ package Text_editor_GUI;
 
 import com.mycompany.utils.Config;
 import com.mycompany.text_editor.NotesService;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import models.Note;
 
 /**
@@ -17,14 +19,27 @@ public class WelcomePage extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(WelcomePage.class.getName());
     private NotesService notesService;
+    private String username;
     /**
      * Creates new form WelcomePage
      */
-    public WelcomePage() {
+    public WelcomePage(String username) {
         initComponents();
-        
+        this.username = username;
         Config.getConnection();
         notesService = new NotesService();
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            jTable1MouseClicked(evt);
+        }
+        });
+        
+        loadTableData();
+    }
+
+    private WelcomePage() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -131,30 +146,121 @@ public class WelcomePage extends javax.swing.JFrame {
     private void jsearchBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jsearchBTNActionPerformed
         // TODO add your handling code here:
         //add search function
+        String query = JOptionPane.showInputDialog(this, "Search for file title:");
+        if (query != null) {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+
+            List<Note> notes = notesService.getNotesByUser(this.username);
+            for (Note note : notes) {
+                if (note.getFileName().toLowerCase().contains(query.toLowerCase())) {
+                    model.addRow(new Object[]{note.getFileName(), note.getFileContents()});
+                }
+            }
+        }
 
 
     }//GEN-LAST:event_jsearchBTNActionPerformed
 
     private void jNewfileBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNewfileBTActionPerformed
         String title = JOptionPane.showInputDialog("Enter the Note Title");
-        Note note = new Note(title);
-        notesService.CreateText(note);
+    
+        // Check if user clicked cancel or entered nothing
+        if (title != null && !title.trim().isEmpty()) {
+            // Pass the title, initial empty content, and the current session username
+            Note note = new Note(title, "", this.username); 
+            notesService.CreateText(note);
+
+            
+    }
+        loadTableData();
         //add new file function
     }//GEN-LAST:event_jNewfileBTActionPerformed
 
     private void jcopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcopyActionPerformed
         // TODO add your handling code here:
         //add copy function
+        int row = jTable1.getSelectedRow();
+        if (row != -1) {
+            String originalTitle = jTable1.getValueAt(row, 0).toString();
+            String newTitle = JOptionPane.showInputDialog(this, "Enter name for duplicate:", originalTitle + "_copy");
+
+            if (newTitle != null && !newTitle.trim().isEmpty()) {
+                // Fetch the original note content
+                Note originalNote = notesService.getSpecificNote(originalTitle, this.username);
+
+                if (originalNote != null) {
+                    // Create a new note with the same content but new title
+                    Note duplicateNote = new Note(newTitle, originalNote.getFileContents(), this.username);
+                    notesService.CreateText(duplicateNote);
+                    loadTableData(); // Refresh list
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Select a file to duplicate first.");
+        }
     }//GEN-LAST:event_jcopyActionPerformed
 
     private void jdeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jdeleteActionPerformed
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1) {
+            // Get the title from the first column of your table
+            String title = jTable1.getValueAt(selectedRow, 0).toString();
 
+            int confirm = JOptionPane.showConfirmDialog(this, "Delete " + title + "?");
+            if (confirm == JOptionPane.YES_OPTION) {
+                notesService.DeleteNote(title, this.username);
+                // Refresh table after deletion
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a file to delete.");
+        }
+        loadTableData();
         //add delete function
     }//GEN-LAST:event_jdeleteActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
+    public final void loadTableData() {
+        // 1. Get the list of notes for the current user
+        List<Note> notes = notesService.getNotesByUser(this.username);
+
+        // 2. Access the table's model
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        // 3. Clear existing rows to avoid duplicates
+        model.setRowCount(0);
+
+        // 4. Define column headers (Title and Preview)
+        model.setColumnIdentifiers(new String[]{"File Name", "Content Preview"});
+
+        // 5. Add notes to the table
+        for (Note note : notes) {
+            String preview = note.getFileContents();
+            // Shorten preview if it's too long
+            if (preview.length() > 50) preview = preview.substring(0, 47) + "...";
+
+            model.addRow(new Object[]{note.getFileName(), preview});
+    }
+}
+    
+private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
+        if (evt.getClickCount() == 2) { // Double-click detected
+        int row = jTable1.getSelectedRow();
+        if (row != -1) {
+            String title = jTable1.getValueAt(row, 0).toString();
+
+            // Create the editor, passing the selected title and current username
+            TEGUI editor = new TEGUI(title, this.username);
+            editor.setLocation(this.getLocation());
+            editor.setVisible(true);
+
+            // Close the welcome page
+            this.dispose();
+        }
+    }    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
