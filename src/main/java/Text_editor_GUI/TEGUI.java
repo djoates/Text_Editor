@@ -93,6 +93,7 @@ public class TEGUI extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jSaveMenu = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jUndo = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -139,6 +140,11 @@ public class TEGUI extends javax.swing.JFrame {
         jMenuItem2.setText("Exit");
         jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
         jMenu1.add(jMenuItem2);
+
+        jSaveMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jSaveMenu.setText("Save");
+        jSaveMenu.addActionListener(this::jSaveMenuActionPerformed);
+        jMenu1.add(jSaveMenu);
 
         jMenuBar1.add(jMenu1);
 
@@ -244,6 +250,11 @@ public class TEGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void jSaveMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSaveMenuActionPerformed
+        // TODO add your handling code here:
+         Save(true);
+    }//GEN-LAST:event_jSaveMenuActionPerformed
+
     
     /**
      * @param args the command line arguments
@@ -279,6 +290,7 @@ public class TEGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jSAVEBT;
+    private javax.swing.JMenuItem jSaveMenu;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JMenuItem jUndo;
