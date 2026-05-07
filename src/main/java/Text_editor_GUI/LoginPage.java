@@ -38,9 +38,9 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         usernameInput = new javax.swing.JTextField();
-        passwordInput = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
         jsign_up = new javax.swing.JButton();
+        passwordInput = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,8 +50,6 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel2.setText("Username:");
 
         jLabel3.setText("Password:");
-
-        passwordInput.addActionListener(this::passwordInputActionPerformed);
 
         loginButton.setText("Login");
         loginButton.addActionListener(this::loginButtonActionPerformed);
@@ -76,8 +74,8 @@ public class LoginPage extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(usernameInput)
-                            .addComponent(passwordInput, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)))
+                            .addComponent(usernameInput, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                            .addComponent(passwordInput)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(300, 300, 300)
                         .addComponent(loginButton)))
@@ -110,10 +108,6 @@ public class LoginPage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void passwordInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordInputActionPerformed
-
     private void jsign_upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jsign_upActionPerformed
         // TODO add your handling code here:
         SignUpPage signuppage = new SignUpPage();
@@ -127,25 +121,34 @@ public class LoginPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jsign_upActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        // TODO add your handling code here:
-        String username = usernameInput.getText();
-    // Using JPasswordField is better, but following your JTextField setup
-    String password = passwordInput.getText(); 
+        String username = usernameInput.getText().trim();
 
-    User user = userService.checkUser(username, password);
-    
-    if (user != null) {
-        // Pass the username to the next page so the database knows who is saving notes
-        WelcomePage welcomePage = new WelcomePage(username); 
-        welcomePage.setLocation(this.getLocation());
-        welcomePage.setVisible(true);
-        this.dispose(); // Close login window properly
-    } else {
-        JOptionPane.showMessageDialog(rootPane,
-                "Invalid username or password!",
-                "Login Failed",
-                JOptionPane.ERROR_MESSAGE);
-    }
+        // JPasswordField.getText() is deprecated; use getPassword() instead
+        char[] passwordChars = passwordInput.getPassword();
+        String password = new String(passwordChars);
+
+        // Basic Validation
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter both username and password.");
+            return;
+        }
+
+        User user = userService.checkUser(username, password);
+
+        if (user != null) {
+            WelcomePage welcomePage = new WelcomePage(username);
+            welcomePage.setLocation(this.getLocation());
+            welcomePage.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Invalid username or password!",
+                    "Login Failed",
+                    JOptionPane.ERROR_MESSAGE);
+
+            // Clear password field on failed attempt for security
+            passwordInput.setText("");
+        }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     /**
@@ -179,7 +182,7 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton jsign_up;
     private javax.swing.JButton loginButton;
-    private javax.swing.JTextField passwordInput;
+    private javax.swing.JPasswordField passwordInput;
     private javax.swing.JTextField usernameInput;
     // End of variables declaration//GEN-END:variables
 }
